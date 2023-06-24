@@ -1,0 +1,4 @@
+flask==2.3.2
+flask-restx==1.1.0
+marshmallow==3.19.0
+SQLAlchemy==2.0.16

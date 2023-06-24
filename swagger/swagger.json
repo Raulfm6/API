@@ -1,0 +1,317 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API REST",
+        "description": "Api rest para la creación, modificación y eliminación de clientes, así como la obtención de su información y la simulación de una hipoteca",
+        "version": "1.0"
+    },
+    "host": "0.0.0.0",
+    "schemes": [
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/client": {
+            "post": {
+                "summary": "Creación de un cliente",
+                "description": "Se encarga de la creación e inserción en base de datos de un nuevo cliente",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "",
+                        "description": "Cuerpo de la petición",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/createClient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta en caso de correcta ejecución\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "400": {
+                        "description": "Petición no valida\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Obtención información",
+                "description": "Se encarga de la obtención de la información de un cliente mediante su DNI",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "",
+                        "description": "Cuerpo de la petición",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getClient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta en caso de correcta ejecución\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "400": {
+                        "description": "Petición no valida\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "404": {
+                        "description": "Cliente no encontrado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Modificación de Cliente",
+                "description": "Se encarga de la la modificación de la información de un cliente mediante su DNI",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "",
+                        "description": "Cuerpo de la petición",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/updateClient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta en caso de correcta ejecución\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "400": {
+                        "description": "Petición no valida\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "404": {
+                        "description": "Cliente no encontrado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Elimiación de Cliente",
+                "description": "Se encarga de la eliminación de un cliente mediante su DNI",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "",
+                        "description": "Cuerpo de la petición",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getClient"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta en caso de correcta ejecución\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "400": {
+                        "description": "Petición no valida\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "404": {
+                        "description": "Cliente no encontrado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/simulation": {
+            "post": {
+                "summary": "Creación de una simulación",
+                "description": "Se encarga de la creación de una simulación a partir del DNI de un cliente, un TAE y un periodo dados",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "",
+                        "description": "Cuerpo de la petición",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/createSimulation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Respuesta en caso de correcta ejecución\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "400": {
+                        "description": "Petición no valida\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    },
+                    "500": {
+                        "description": "Error inesperado\n",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "createClient": {
+            "type": "object",
+            "properties": {
+                "dni": {
+                    "type": "string",
+                    "maxLength": 9
+                },
+                "name": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "capital": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "dni",
+                "name",
+                "email",
+                "capital"
+            ]
+        },
+        "updateClient": {
+            "type": "object",
+            "properties": {
+                "dni": {
+                    "type": "string",
+                    "maxLength": 9
+                },
+                "params_to_update": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "capital": {
+                            "type": "number"
+                        }
+                    }
+                }
+            },
+            "required": [
+                "dni",
+                "params_to_update"
+            ]
+        },
+        "getClient": {
+            "type": "object",
+            "properties": {
+                "dni": {
+                    "type": "string",
+                    "maxLength": 9
+                }
+            },
+            "required": [
+                "dni"
+            ]
+        },
+        "createSimulation": {
+            "type": "object",
+            "properties": {
+                "dni": {
+                    "type": "string",
+                    "maxLength": 9
+                },
+                "tae": {
+                    "type": "number"
+                },
+                "term": {
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "dni",
+                "tae",
+                "term"
+            ]
+        },
+        "response": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "result": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "success",
+                "result"
+            ]
+        }
+    }
+}
