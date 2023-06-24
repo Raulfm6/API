@@ -1,3 +1,4 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session,sessionmaker
 
@@ -11,13 +12,16 @@ class FlaskConfig:
     
 class SqlAlchemyConfig:
     __engine = None
-    DATA_BASE_URI = 'sqlite:///DB/database.db'
+    DATA_BASE_FOLDER_NAME = 'DB'
+    DATA_BASE_URI = f'sqlite:///{DATA_BASE_FOLDER_NAME}/database.db'
     SQL_ALCHEMY_POOL_RECYCLE = 280
     SQL_ALCHEMY_POOL_SIZE = 1
     SQL_ALCHEMY_MAX_OVERFLOW = -1
     
     @classmethod
     def getPersistenceSessionContext(cls) -> Session:
+        if not os.path.exists(cls.DATA_BASE_FOLDER_NAME):
+            os.makedirs(cls.DATA_BASE_FOLDER_NAME)
                      
         if cls.__engine is None:
             cls.__engine = create_engine(
