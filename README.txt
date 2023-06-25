@@ -14,6 +14,9 @@ Instrucciones para ejecutar el archivo:
 	- Si se usa algún IDE como VSCode presionar el botón de ejecutar
 	- Si no, abrir un terminal en la carpeta API y ejecutar python app.py
 
+Si por algún motivo da error al ejecutar debido a SQLAlchemy será necesario salir del entorno virtual con CTRL+C e installar los requirements de nuevo con 
+pip install -r requirements.txt
+
 4- Importar la colección postman (en este caso se ha decidido usar postman):
 
 5- Lanzar las peticiones
