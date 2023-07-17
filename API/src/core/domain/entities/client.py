@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 
 
 def to_upper(value: str) -> str:
@@ -12,5 +12,5 @@ class Client:
     dni: str = field(default_factory=to_upper)
     id: int = None
     
-    def __str__(self) -> str:
-        return f"Cliente con id {self.id}, dni {self.dni}, email {self.email} y capital {self.capital}"
+    def toJson(self):
+        return asdict(self)

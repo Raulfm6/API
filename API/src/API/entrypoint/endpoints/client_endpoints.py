@@ -1,10 +1,11 @@
+from dataclasses import asdict
 from flask_restx import Resource
 from flask import request
 from src.core.domain.entities.client import Client
 from src.API.models.api_models import ApiWrapper
 from src.API.entrypoint.endpoints.request_checker import RequestChecker
 from src.logger import Logger
-from src.settings import SqlAlchemyConfig
+from src.settings import OperationResult, SqlAlchemyConfig
 from src.core.infrastructure.database.client_repository import ClienteRepository
 
 class ClientResource(Resource, RequestChecker):
@@ -12,10 +13,6 @@ class ClientResource(Resource, RequestChecker):
     def __init__(self, api=None, *args, **kwargs) -> None:
         self.logger = Logger()
         self.session = SqlAlchemyConfig.getPersistenceSessionContext()
-        self.SUCCESS_OPERATION = dict(
-            status=200, 
-            result="Operation Succeded"
-        ), 200
         super().__init__(api, *args, **kwargs)
     
     @ApiWrapper.Api.expect(ApiWrapper.ClientModel, validate=True)   
@@ -29,10 +26,10 @@ class ClientResource(Resource, RequestChecker):
         client_repository = ClienteRepository(session=self.session)
         exist_client = client_repository.check_if_dni_exist(client.dni)
         if exist_client:
-            return dict(status=500, result="DNI Already in Data Base"), 500
+            return OperationResult.DNI_ALREADY_IN_DATABASE_RESULT, OperationResult.DATABASE_ERROR_CODE
         
         client_repository.add_client(client=client)
-        return self.SUCCESS_OPERATION
+        return OperationResult.SUCCESS_RESULT, OperationResult.SUCCESS_CODE
         
     @ApiWrapper.Api.expect(ApiWrapper.DNIModel, validate=True) 
     @ApiWrapper.Api.doc('Allow to get client info') 
@@ -43,9 +40,11 @@ class ClientResource(Resource, RequestChecker):
         
         client = ClienteRepository(session=self.session).get_by_dni(dni=dni)
         if not client:
-            return dict(status=404, result="There isn´t a client for this DNI"), 404
-        
-        return dict(status=200, resultr=repr(client)), 200
+            return OperationResult.CLIENT_NOT_EXIST_RESULT, OperationResult.NOT_FOUND_CODE
+        return dict(
+            status=OperationResult.SUCCESS_RESULT['status'], 
+            result=client.toJson()
+            ), OperationResult.SUCCESS_CODE
     
     @ApiWrapper.Api.expect(ApiWrapper.ModifyClientModel, validate=True)   
     @ApiWrapper.Api.doc('Allow to modify data from client') 
@@ -62,10 +61,10 @@ class ClientResource(Resource, RequestChecker):
         client_repository = ClienteRepository(session=self.session)
         exist_client = client_repository.check_if_dni_exist(dni)
         if not exist_client:
-            return dict(status=404, result="There isn´t a client for this DNI"), 404
+            return OperationResult.CLIENT_NOT_EXIST_RESULT, OperationResult.NOT_FOUND_CODE
         
         client_repository.update_client(dni=dni, params_to_update=params_to_update)
-        return self.SUCCESS_OPERATION
+        return OperationResult.SUCCESS_RESULT, OperationResult.SUCCESS_CODE
     
     @ApiWrapper.Api.expect(ApiWrapper.DNIModel, validate=True) 
     @ApiWrapper.Api.doc('Allow to delete client from data base') 
@@ -76,5 +75,9 @@ class ClientResource(Resource, RequestChecker):
 
         client_repository = ClienteRepository(session=self.session)
         client = client_repository.get_by_dni(dni=dni)
+        
+        if not client:
+            return OperationResult.CLIENT_NOT_EXIST_RESULT, OperationResult.NOT_FOUND_CODE
+            
         client_repository.delete_client(client=client)
-        return self.SUCCESS_OPERATION
+        return OperationResult.SUCCESS_RESULT, OperationResult.SUCCESS_CODE

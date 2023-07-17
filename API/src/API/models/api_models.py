@@ -43,7 +43,7 @@ class ApiWrapper:
     @staticmethod
     @Api.errorhandler(BadRequest)
     def bad_request_allowed_error_handler(error):
-               
+
         if not error.response:
             error.response = 'Request body cannot be null'
             
@@ -55,7 +55,7 @@ class ApiWrapper:
         
         response = dict(
             status='KO',
-            message=error.response
+            result=error.response
         )
 
         return response, error.code
@@ -74,7 +74,7 @@ class ApiWrapper:
         
         response = dict(
             status='KO',
-            message=errorMessage
+            result=errorMessage
         )
 
         return response, error.code

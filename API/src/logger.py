@@ -40,9 +40,5 @@ class Logger(metaclass=Singleton):
     def _format_log_info(self, *args, **kwargs):
         self.message_info = args[0]
         self.log_info = kwargs.get('log_info', {})
-        self.id_container = self.log_info.get('id_container')
-        self.id_operation = self.log_info.get('id_operation')
-        self.username = self.log_info.get('username')
-
         log_message = f'{self.message_info}'
         return log_message

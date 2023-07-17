@@ -7,7 +7,6 @@ class ApiRest:
          
     logger = Logger()
     
-    
     @staticmethod
     def init_api():
         
@@ -35,7 +34,7 @@ class ApiRest:
         message = f'{error.code} Bad Request.'
         logMessage = f'{message}. {errorMessage}'
         
-        Logger().error(f'{logMessage}')
+        ApiRest.logger.error(f'{logMessage}')
         
         error.response = dict(
             status='KO',

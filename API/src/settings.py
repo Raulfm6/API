@@ -9,6 +9,35 @@ class FlaskConfig:
     FLASK_HOST = "0.0.0.0"
     FLASK_PORT = 8080
     
+class OperationResult:
+    SUCCESS_CODE = 200
+    ERROR_CODE = 400
+    NOT_FOUND_CODE = 404
+    DATABASE_ERROR_CODE = 500
+    SUCCESS_RESULT = dict(
+        status='OK', 
+        result='Operation Succeded'
+    )
+    CLIENT_NOT_EXIST_RESULT = dict(
+        status='KO', 
+        result='There isn´t a client for this DNI'
+    )
+    DNI_INCORRECT_RESULT = dict(
+            status='KO', 
+            result='The DNI sended is incorrect'
+    )
+    EMAIL_INCORRECT_RESULT = dict(
+            status='KO', 
+            result='The email sended is incorrect'
+    )
+    TAE_TERM_INCORRECT_RESULT = dict(
+            status='KO', 
+            result='The TAE and term values cannot be negative nor zero'
+    )
+    DNI_ALREADY_IN_DATABASE_RESULT = dict(
+            status='KO', 
+            result='The DNI sended is already in database'
+    )
     
 class SqlAlchemyConfig:
     __engine = None

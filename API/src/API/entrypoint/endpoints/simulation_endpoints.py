@@ -2,7 +2,7 @@ from flask_restx import Resource
 from flask import request
 from src.API.models.api_models import ApiWrapper
 from src.logger import Logger
-from src.settings import SqlAlchemyConfig
+from src.settings import OperationResult, SqlAlchemyConfig
 from src.core.infrastructure.database.client_repository import ClienteRepository
 from src.core.infrastructure.database.simulation_repository import SimulationRepository
 from src.API.entrypoint.endpoints.request_checker import RequestChecker
@@ -25,14 +25,14 @@ class SimulationResource(Resource, RequestChecker):
         
         client = ClienteRepository(session=self.session).get_by_dni(dni=dni)
         if not client:
-            return dict(status=404, result="There isn´t a client for this DNI"), 404
+            return OperationResult.CLIENT_NOT_EXIST_RESULT, OperationResult.NOT_FOUND_CODE
         
         tae = body.get('tae')
         term = body.get('term')
         
         self.check_simulation_params(tae=tae, term=term)
         
-        quota, return_import = self.__calculate_quota_and_return_import(tae=tae, term=term, capital=client.capital)
+        quota, return_import = self.calculate_quota_and_return_import(tae=tae, term=term, capital=client.capital)
         
         simulation = Simulation(dni=dni, quota=quota, return_import=return_import)
         simulation_repository = SimulationRepository(session=self.session)
@@ -43,11 +43,11 @@ class SimulationResource(Resource, RequestChecker):
         else:
             simulation_repository.add_simulation(simulation=simulation)
             
-        return dict(success=200, result=f"Quota: {quota}, Importe Total: {return_import}"),200
+        return dict(success=OperationResult.SUCCESS_RESULT['status'], result=f"Quota: {quota}, Importe Total: {return_import}"),OperationResult.SUCCESS_CODE
     
     
     @staticmethod
-    def __calculate_quota_and_return_import(tae, term, capital):
+    def calculate_quota_and_return_import(tae, term, capital):
         NUMBER_OF_MONTHS = 12
         PERCENTAGE = 100
         

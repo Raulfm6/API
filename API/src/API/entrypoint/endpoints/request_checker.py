@@ -1,5 +1,6 @@
 import re
 from werkzeug.exceptions import BadRequest
+from src.settings import OperationResult
 
 class RequestChecker:
     """
@@ -14,14 +15,14 @@ class RequestChecker:
         dni = dni.upper()
         
         if not re.match(DNI_REGEX, dni):
-            raise BadRequest(description='DNI Incorrect', response='The DNI sended is incorrect')
+            raise BadRequest(description='DNI Incorrect', response=OperationResult.DNI_INCORRECT_RESULT['result'])
     
         digits = dni[:-1] 
         letter = dni[-1]
         letter_index = int(digits) % 23
 
         if letter != DNI_LETTERS[letter_index]:
-            raise BadRequest(description='DNI Incorrect', response='The DNI sended is incorrect')
+            raise BadRequest(description='DNI Incorrect', response=OperationResult.DNI_INCORRECT_RESULT['result'])
         
     @staticmethod
     def check_email(email: str) -> None:
@@ -29,12 +30,12 @@ class RequestChecker:
         EMAIL_REGEX = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         
         if not re.match(EMAIL_REGEX, email):
-            raise BadRequest(description='Email Incorrect', response='The email sended is incorrect')
+            raise BadRequest(description='Email Incorrect', response=OperationResult.EMAIL_INCORRECT_RESULT['result'])
         
         
     @staticmethod
     def check_simulation_params(tae: float, term: int):
         
         if tae <= 0 or term <= 0:
-            raise BadRequest(description='Simulation Incorrect', response='The TAE and term values cannot be negative nor zero')
+            raise BadRequest(description='Simulation Incorrect', response=OperationResult.TAE_TERM_INCORRECT_RESULT['result'])
         
