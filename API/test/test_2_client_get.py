@@ -9,9 +9,9 @@ class TestClientGet(BaseTest):
     
     def test_get_ok(self):
         request_body = {
-            "dni": "99999999R"
+            "dni": "00000000T"
         }
-        assert_client = Client(id=1, dni='99999999R', name='Otro', email='otro@otro.es', capital=100.0)
+        assert_client = Client(id=1, dni='00000000T', name='Nombre', email='email@email.com', capital=145.0)
         response = self.test_client.get(self.ENDPOINT, json=request_body)
         assert response.status_code == OperationResult.SUCCESS_CODE
         assert response.json['result'] == assert_client.toJson()

@@ -21,6 +21,14 @@ pip install -r requirements.txt
 
 5- Lanzar las peticiones
 
+Testing:
+
+1- Instalar paquetes:
+	Ejecutar: pip install -r requirements.txt (Se han añadido nuevos archivos necesarios)
+
+2- Ejecutar testing:
+	- Si se usa algún IDE como VSCode presionar el botón de ejecutar
+	- Si no, abrir un terminal en la carpeta API y ejecutar python app.py
 
 Dentro de la carpeta DB se encuentra la base de datos.
 En la carpeta swagger se encuentra el swagger.json con la información de la API.

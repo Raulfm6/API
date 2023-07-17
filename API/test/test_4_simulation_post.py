@@ -9,11 +9,11 @@ class TestSimulationPost(BaseTest):
 
     def test_post_ok(self):
         request_body = {
-            "dni": "99999999R",
+            "dni": "00000000T",
             "tae": 10,
             "term": 10
         }
-        client = self.test_client.get('/api/client', json={"dni": "99999999R"}).json['result']
+        client = self.test_client.get('/api/client', json={"dni": "00000000T"}).json['result']
         response = self.test_client.post(self.ENDPOINT, json=request_body)
         quota, term = SimulationResource.calculate_quota_and_return_import(
             capital=client['capital'], 
@@ -35,7 +35,7 @@ class TestSimulationPost(BaseTest):
         
     def test_post_dni_invalid_incorrect_lenght(self):
         request_body = {
-            "dni": "9999999R",
+            "dni": "000000T",
             "tae": 10,
             "term": 5
         }
@@ -45,7 +45,7 @@ class TestSimulationPost(BaseTest):
         
     def test_post_dni_invalid_incorrect_letter(self):
         request_body = {
-            "dni": "99999999Z",
+            "dni": "00000000Z",
             "tae": 10,
             "term": 5
         }
@@ -55,7 +55,7 @@ class TestSimulationPost(BaseTest):
     
     def test_post_tae_zero(self):
         request_body = {
-            "dni": "99999999R",
+            "dni": "00000000T",
             "tae": 0,
             "term": 5
         }
@@ -65,7 +65,7 @@ class TestSimulationPost(BaseTest):
         
     def test_post_tae_negative(self):
         request_body = {
-            "dni": "99999999R",
+            "dni": "00000000T",
             "tae": -10,
             "term": 5
         }
@@ -75,7 +75,7 @@ class TestSimulationPost(BaseTest):
         
     def test_post_term_zero(self):
         request_body = {
-            "dni": "99999999R",
+            "dni": "00000000T",
             "tae": 10,
             "term": 0
         }
@@ -85,7 +85,7 @@ class TestSimulationPost(BaseTest):
             
     def test_post_term_negative(self):
         request_body = {
-            "dni": "99999999R",
+            "dni": "00000000T",
             "tae": 10,
             "term": -5
         }
